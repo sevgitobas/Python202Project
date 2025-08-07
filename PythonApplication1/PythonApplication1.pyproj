@@ -22,14 +22,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="library.py" />
+    <Compile Include="test.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="main.py">
+    <Compile Include="main.py">
       <Publish>True</Publish>
-    </Content>
-    <Content Include="book.py">
+    </Compile>
+    <Compile Include="book.py">
       <Publish>True</Publish>
-    </Content>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
