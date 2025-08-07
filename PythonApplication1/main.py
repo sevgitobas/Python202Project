@@ -1,9 +1,13 @@
 # main.py
+print("DEBUG: main.py başladı")
+
 
 from library import Library
 from book import Book
 
+
 def menu():
+    print("DEBUG: Menü fonksiyonu çağrıldı")
     print("\n=== KÜTÜPHANE UYGULAMASI ===")
     print("1. Kitap Ekle")
     print("2. Kitap Sil")
