@@ -23,7 +23,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="library.py" />
-    <Compile Include="test.py">
+    <Compile Include="tests\test_book.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\test_library.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -34,6 +37,9 @@
     <Compile Include="book.py">
       <Publish>True</Publish>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

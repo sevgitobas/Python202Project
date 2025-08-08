@@ -12,13 +12,19 @@ class Library:
         self.load_books()
 
     def load_books(self):
-        """library.json varsa yükler, yoksa dosya oluşturur."""
         if not os.path.exists(self.filename):
             with open(self.filename, "w", encoding="utf-8") as f:
                 json.dump([], f, ensure_ascii=False, indent=4)
-        with open(self.filename, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            self.books = [Book.from_dict(item) for item in data]
+
+        try:
+            with open(self.filename, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except json.JSONDecodeError:
+            data = []
+            with open(self.filename, "w", encoding="utf-8") as f:
+                json.dump([], f, ensure_ascii=False, indent=4)
+
+        self.books = [Book.from_dict(item) for item in data]
 
     def save_books(self):
         """Mevcut kitap listesini JSON dosyasına yazar."""
