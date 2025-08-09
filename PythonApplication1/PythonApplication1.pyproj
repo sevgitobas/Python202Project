@@ -12,6 +12,10 @@
     <Name>PythonApplication1</Name>
     <RootNamespace>PythonApplication1</RootNamespace>
     <IsWindowsApplication>False</IsWindowsApplication>
+    <TestFramework>unittest</TestFramework>
+    <UnitTestPattern>test*.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
+    <InterpreterId>Global|PythonCore|3.7</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,24 +26,18 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="library.py" />
-    <Compile Include="tests\test_book.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="tests\test_library.py">
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="main.py">
       <Publish>True</Publish>
     </Compile>
     <Compile Include="book.py">
       <Publish>True</Publish>
     </Compile>
+    <Compile Include="library.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="tests\" />
+    <InterpreterReference Include="Global|PythonCore|3.7" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
