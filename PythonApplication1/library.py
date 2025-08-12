@@ -4,6 +4,8 @@
 import json
 import os
 from book import Book
+from typing import Optional
+
 
 class Library:
     def __init__(self, filename: str = "library.json"):
@@ -46,7 +48,7 @@ class Library:
         """Tüm kitap nesnelerini döner."""
         return self.books
 
-    def find_book(self, isbn: str) -> Book | None:
+    def find_book(self, isbn: str) -> Optional[Book]:
         """ISBN’e göre Book nesnesini döner ya da None."""
         return next((book for book in self.books if book.isbn == isbn), None)
 
