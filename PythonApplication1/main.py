@@ -1,8 +1,10 @@
 # main.py
 
+import os
+from src.library import Library
+from src.book import Book
+from pathlib import Path
 
-from library import Library
-from book import Book
 
 def menu():
     print("\n=== KÜTÜPHANE UYGULAMASI ===")
@@ -14,7 +16,9 @@ def menu():
     print("6. Çıkış")
 
 def main():
-    lib = Library("library.json")
+    base_dir = Path(__file__).resolve().parent
+    json_path = base_dir / "data" / "library.json"
+    lib = Library(str(json_path))
 
     while True:
         menu()

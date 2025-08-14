@@ -2,22 +2,24 @@ import unittest
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
+from pathlib import Path
 from book import Book
 from library import Library
 
 class TestLibrary(unittest.TestCase):
+
     def setUp(self):
         # Test için ayrı bir dosya kullanıyoruz
-        self.test_file = "test_library.json"
-        self.library = Library(self.test_file)
-        self.library.books = []  # Temiz başlangıç
+        base_dir = Path(__file__).resolve().parent
+        self.test_file = base_dir / "test_library.json"
+        self.library = Library(str(self.test_file))
+        self.library.books = []
         self.library.save_books()
 
     def tearDown(self):
         # Test dosyasını sil
-        if os.path.exists(self.test_file):
-            os.remove(self.test_file)
+        if self.test_file.exists():
+            self.test_file.unlink()
 
     def test_add_book(self):
         book = Book("Test Kitap", "Test Yazar", "1234567890")

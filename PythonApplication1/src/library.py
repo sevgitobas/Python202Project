@@ -3,15 +3,16 @@
 
 import json
 import os
-from book import Book
+from src.book import Book
 from typing import Optional
+from pathlib import Path
 
 
 class Library:
-    def __init__(self, filename: str = "library.json"):
-        self.filename = filename
+    def __init__(self, filename: str = None):
         self.books = []
-        self.load_books()
+        base_dir = Path(__file__).resolve().parent
+        self.filename = filename or base_dir.parent / "data" / "library.json"
 
     def load_books(self):
         if not os.path.exists(self.filename):

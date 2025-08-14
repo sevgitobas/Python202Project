@@ -26,16 +26,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="api.py">
+    <Compile Include="src\api.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py">
       <Publish>True</Publish>
     </Compile>
-    <Compile Include="book.py">
+    <Compile Include="src\book.py">
       <Publish>True</Publish>
     </Compile>
-    <Compile Include="library.py">
+    <Compile Include="src\library.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tests\test_library.py">
@@ -46,6 +46,8 @@
     <InterpreterReference Include="Global|PythonCore|3.7" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="data\" />
+    <Folder Include="src\" />
     <Folder Include="tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
