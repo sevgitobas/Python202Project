@@ -6,7 +6,7 @@ import os
 from src.book import Book
 from typing import Optional
 from pathlib import Path
-
+import httpx
 
 class Library:
     def __init__(self, filename: str = None):
