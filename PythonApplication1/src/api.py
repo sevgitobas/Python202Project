@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
+from src.routers import users
 
 app = FastAPI()
+app.include_router(users.router)
 
 # Kitap modeli
 class Book(BaseModel):
