@@ -1,7 +1,7 @@
 import unittest
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from pathlib import Path
 from src.book import Book
 from src.library import Library
@@ -10,19 +10,21 @@ class TestLibrary(unittest.TestCase):
 
     def setUp(self):
         # Test için ayrı bir dosya kullanıyoruz
-        base_dir = Path(__file__).resolve().parent
-        self.test_file = base_dir / "test_library.json"
+        self.test_file = Path(__file__).parent / "test_library.json"
         self.library = Library(str(self.test_file))
-        self.library.books = []
+        self.library.books = [
+            Book(title="Test Kitabı", author="Test Yazar", isbn="1234567890")
+        ]
         self.library.save_books()
 
     def tearDown(self):
-        # Test dosyasını sil
-        if self.test_file.exists():
+        try:
             self.test_file.unlink()
+        except Exception as e:
+            print(f"Dosya silinemedi: {e}")
 
     def test_add_book(self):
-        book = Book("Test Kitap", "Test Yazar", "1234567890")
+        book = Book("Test Kitap", "Test Yazar", "9999999999")
         result = self.library.add_book(book)
         self.assertTrue(result)
         self.assertEqual(len(self.library.books), 1)
@@ -56,6 +58,14 @@ class TestLibrary(unittest.TestCase):
         self.library.add_book(book2)
         books = self.library.list_books()
         self.assertEqual(len(books), 2)
+
+    def test_add_book_by_isbn(self):
+        isbn = "9780140328721"  # Matilda by Roald Dahl
+        result = self.library.add_book_by_isbn(isbn)
+        self.assertTrue(result)
+        book = self.library.find_book(isbn)
+        self.assertIsNotNone(book)
+        self.assertEqual(book.title, "Matilda")
 
 if __name__ == "__main__":
     unittest.main()

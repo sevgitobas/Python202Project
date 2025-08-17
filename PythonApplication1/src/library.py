@@ -12,13 +12,13 @@ class Library:
     def __init__(self, filename: str = None):
         self.books = []
         base_dir = Path(__file__).resolve().parent
-        self.filename = filename or base_dir.parent / "data" / "library.json"
+        self.filename = Path(filename) if filename else base_dir.parent / "data" / "library.json"
 
     def load_books(self):
-        if not os.path.exists(self.filename):
+        if not self.filename.exists():
             with open(self.filename, "w", encoding="utf-8") as f:
                 json.dump([], f, ensure_ascii=False, indent=4)
-        with open(self.filename, "r", encoding="utf-8") as f:
+        with open(self.filename, "w", encoding="utf-8") as f:
             data = json.load(f)
             self.books = [Book.from_dict(item) for item in data]
 
