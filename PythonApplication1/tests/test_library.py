@@ -4,22 +4,24 @@ import sys
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from pathlib import Path
 from src.book import Book
+import tempfile
 from src.library import Library
 
 class TestLibrary(unittest.TestCase):
 
     def setUp(self):
-        # Test için ayrı bir dosya kullanıyoruz
-        self.test_file = Path(__file__).parent / "test_library.json"
-        self.library = Library(str(self.test_file))
+        # Geçici dosya oluştur
+        self.temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
+        self.library = Library(self.temp_file.name)
         self.library.books = [
             Book(title="Test Kitabı", author="Test Yazar", isbn="1234567890")
         ]
         self.library.save_books()
 
     def tearDown(self):
+        # Geçici dosyayı sil
         try:
-            self.test_file.unlink()
+            os.remove(self.temp_file.name)
         except Exception as e:
             print(f"Dosya silinemedi: {e}")
 
@@ -66,6 +68,21 @@ class TestLibrary(unittest.TestCase):
         book = self.library.find_book(isbn)
         self.assertIsNotNone(book)
         self.assertEqual(book.title, "Matilda")
+
+    def test_remove_book_by_isbn(self):
+        book = Book("Test Kitap", "Test Yazar", "1234567890")
+        self.library.add_book(book)
+
+        # Silme işlemi
+        result = self.library.remove_book("1234567890")
+        self.assertTrue(result)
+
+        # Tekrar silmeye çalış → False dönmeli
+        result = self.library.remove_book("1234567890")
+        self.assertFalse(result)
+
+        # Kitap gerçekten silinmiş mi?
+        self.assertEqual(len(self.library.books), 0)
 
 if __name__ == "__main__":
     unittest.main()

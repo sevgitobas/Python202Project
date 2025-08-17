@@ -24,6 +24,17 @@ def add_book(book: Book):
     books_db.append(book)
     return {"message": "Kitap başarıyla eklendi", "book": book}
 
+# Kitapları listeleme endpoint'i
 @app.get("/books", response_model=List[Book])
 def list_books():
     return books_db
+
+# Kitap silme endpoint'i
+@app.delete("/books/{title}")
+def delete_book(title: str):
+    global books_db
+    for book in books_db:
+        if book.title == title:
+            books_db.remove(book)
+            return {"message": f"{title} kitabı silindi"}
+    return {"message": f"{title} kitabı bulunamadı"}
