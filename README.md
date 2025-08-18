@@ -7,21 +7,21 @@ Kitap ekleme, silme, listeleme ve arama işlemlerini Nesne Yönelimli Programlam
 
 ## Proje Yapısı
 
+
 Python202Project/ 
 ├── README.md 
 ├── requirements.txt 
 ├── PythonApplication1/ 
-│ ├── main.py				 # Konsol uygulama döngüsü
-│ ├── src/
-│ │ ├── models/
-│ │ ├── routers/
-│ │ │ ├── api.py             # API yönlendirme işlemleri
-│ │ │ ├── book.py            # Kitap sınıfı
-│ │ │ ├── library.py         # Kütüphane sınıfı
-│ ├── tests/
-| ├── data/
-│ │ ├── library.json         # Kitap verilerinin saklandığı JSON dosyası
-
+│ ├── main.py             # Konsol uygulama döngüsü 
+│ ├── src/ 
+│ │ ├── models/ 
+│ │ ├── routers/ 
+│ │ │ ├── api.py          # API yönlendirme işlemleri 
+│ │ │ ├── book.py         # Kitap sınıfı 
+│ │ │ ├── library.py      # Kütüphane sınıfı 
+│ ├── tests/ 
+| ├── data/ 
+│ │ ├── library.json      # Kitap verilerinin saklandığı JSON dosyası
 ---
 
 ## Özellikler
