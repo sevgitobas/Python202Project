@@ -10,7 +10,7 @@ class TestBookEndpoints(unittest.TestCase):
         self.client = TestClient(app)
 
     def test_add_book(self):
-        payload = {"title": "1984", "author": "George Orwell", "year": 1949}
+        payload = {"title": "1984", "author": "George Orwell", "year": 1949, "isbn": "1234567890"}
         response = self.client.post("/books", json=payload)
         self.assertEqual(response.status_code, 200)
         self.assertIn("Kitap başarıyla eklendi", response.json()["message"])
