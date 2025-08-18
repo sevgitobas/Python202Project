@@ -1,3 +1,5 @@
+ï»¿# -*- coding: utf-8 -*-
+
 import unittest
 from fastapi.testclient import TestClient
 from src.api import app
@@ -11,7 +13,7 @@ class TestBookEndpoints(unittest.TestCase):
         payload = {"title": "1984", "author": "George Orwell", "year": 1949}
         response = self.client.post("/books", json=payload)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Kitap baþarýyla eklendi", response.json()["message"])
+        self.assertIn("Kitap baÅŸarÄ±yla eklendi", response.json()["message"])
 
     def test_list_books(self):
         response = self.client.get("/books")

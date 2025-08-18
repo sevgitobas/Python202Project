@@ -1,8 +1,5 @@
-import unittest
+﻿import unittest
 import os
-import sys
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-from pathlib import Path
 from src.book import Book
 import tempfile
 from src.library import Library

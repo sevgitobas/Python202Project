@@ -1,3 +1,5 @@
+ï»¿# -*- coding: utf-8 -*-
+
 import unittest
 import time
 from fastapi.testclient import TestClient
@@ -19,7 +21,7 @@ class TestUserEndpoints(unittest.TestCase):
         payload = {"id": self.test_id, "name": "Sevgi"}
         response = self.client.post("/users", json=payload)
         self.assertIn("message", response.json())
-        self.assertIn("Kullanıcı oluşturuldu", response.json()["message"])
+        self.assertIn("KullanÄ±cÄ± oluÅŸturuldu", response.json()["message"])
 
     def tearDown(self):
         self.client.delete(f"/users/{self.test_id}")
