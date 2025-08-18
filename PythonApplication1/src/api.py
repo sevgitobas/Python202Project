@@ -1,7 +1,9 @@
-from fastapi import FastAPI
+﻿from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
 from src.routers import users, books
+from fastapi import HTTPException
+
 
 app = FastAPI()
 app.include_router(users.router)
@@ -37,4 +39,4 @@ def delete_book(title: str):
         if book.title == title:
             books_db.remove(book)
             return {"message": f"{title} kitabı silindi"}
-    return {"message": f"{title} kitabı bulunamadı"}
+    raise HTTPException(status_code=404, detail=f"{title} kitabı bulunamadı")

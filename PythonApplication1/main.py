@@ -1,4 +1,4 @@
-# main.py
+﻿# main.py
 
 import os
 from src.library import Library
