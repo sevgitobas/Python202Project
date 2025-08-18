@@ -5,11 +5,26 @@ Kitap ekleme, silme, listeleme ve arama işlemlerini Nesne Yönelimli Programlam
 
 ---
 
+## Proje Yapısı
+
+Python202Project/ 
+├── README.md 
+├── requirements.txt 
+├── PythonApplication1/ 
+│ ├── book.py 
+│ ├── library.py 
+│ ├── main.py 
+│ └── library.json
+
+---
+
 ## Özellikler
 
 - Kitap ekleme, silme, listeleme ve ISBN ile arama  
 - Verilerin `library.json` dosyasında saklanması  
 - Modüler mimari: `book.py`, `library.py`, `main.py`  
+- JSON tabanlı veri yönetimi
+- Konsol üzerinden etkileşimli kullanım
 
 ---
 
@@ -38,7 +53,8 @@ Kitap ekleme, silme, listeleme ve arama işlemlerini Nesne Yönelimli Programlam
 
 3. Uygulamayı başlatın:
    ```bash
-	py main.py
+	python PythonApplication1/main.py
+
 
 4. Konsol üzerinden kitap ekleyebilir, silebilir, listeleyebilir ve arama yapabilirsiniz.
 	- Kitap ekleme (ISBN, başlık, yazar, yıl bilgisi girerek)
@@ -46,3 +62,9 @@ Kitap ekleme, silme, listeleme ve arama işlemlerini Nesne Yönelimli Programlam
 	- Tüm kitapları listeleme
 	- Belirli bir kitabı ISBN ile arama
 
+---
+
+## Notlar
+
+	- library.json dosyası otomatik oluşturulmazsa, boş bir JSON dizisi ile manuel ekleyebilirsiniz: []
+	- Kodlar PythonApplication1 klasöründe yer almaktadır. Tüm modüller bu klasörde bulunur.
