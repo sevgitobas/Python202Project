@@ -2,4 +2,4 @@
 uvicorn
 httpx
 pydantic
-unitest
+unittest
