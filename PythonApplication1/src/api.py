@@ -1,24 +1,14 @@
-﻿from fastapi import FastAPI
+﻿from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 from src.routers import users, books
-from fastapi import HTTPException
-
+from src.models.book import Book
+from src.db import books_db  
 
 app = FastAPI()
 app.include_router(users.router)
 app.include_router(books.router)
 
-# Kitap modeli
-class Book(BaseModel):
-    title: str
-    author: str
-    year: int
-
-# Kitapları saklayacağımız liste
-books_db: List[Book] = []
-
-# Kitap ekleme endpoint'i
 @app.post("/books")
 def add_book(book: Book):
     if any(b.title == book.title and b.author == book.author for b in books_db):
@@ -26,17 +16,14 @@ def add_book(book: Book):
     books_db.append(book)
     return {"message": "Kitap başarıyla eklendi", "book": book}
 
-# Kitapları listeleme endpoint'i
 @app.get("/books", response_model=List[Book])
 def list_books():
     return books_db
 
-# Kitap silme endpoint'i
-@app.delete("/books/{title}")
-def delete_book(title: str):
-    global books_db
+@app.delete("/books/{isbn}")
+def delete_book(isbn: str):
     for book in books_db:
-        if book.title == title:
+        if book.isbn == isbn:
             books_db.remove(book)
-            return {"message": f"{title} kitabı silindi"}
-    raise HTTPException(status_code=404, detail=f"{title} kitabı bulunamadı")
+            return {"message": f"{book.title} kitabı silindi"}
+    raise HTTPException(status_code=404, detail=f"{isbn} ISBN'li kitap bulunamadı")

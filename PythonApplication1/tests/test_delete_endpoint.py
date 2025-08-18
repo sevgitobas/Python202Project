@@ -22,11 +22,27 @@ class TestDeleteEndpoint(unittest.TestCase):
         }
         client.post("/books", json=self.sample_book)
 
+
     def test_delete_existing_book(self):
-        encoded_title = quote(self.sample_book['title'])
-        response = client.delete(f"/books/{encoded_title}")
+        isbn = "1234567890"
+
+        # Kitap ekle
+        response = client.post("/books", json={
+            "title": "Silinecek Kitap",
+            "author": "Test Yazar",
+            "year": 2020,
+            "isbn": isbn
+        })
+        assert response.status_code == 200 or response.status_code == 201
+
+        # Kitabı sil
+        response = client.delete(f"/books/{isbn}")
         self.assertEqual(response.status_code, 200)
-        self.assertIn("silindi", response.json().get("message", "").lower())
+
+        # Silindi mi kontrol et
+        response = client.get("/books")
+        kitaplar = response.json()
+        self.assertFalse(any(book["isbn"] == isbn for book in kitaplar))
 
     def test_delete_nonexistent_book(self):
         response = client.delete("/books/doesnotexist")

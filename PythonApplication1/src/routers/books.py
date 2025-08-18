@@ -3,15 +3,11 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import List
+from src.models.book import Book
+from src.db import books_db
 
 router = APIRouter()
 
-class Book(BaseModel):
-    title: str
-    author: str
-    year: int
-
-books_db: List[Book] = []
 
 @router.post("/books")
 def add_book(book: Book):
