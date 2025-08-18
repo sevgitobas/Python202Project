@@ -1,31 +1,46 @@
-# Konsol Tabanlı Kütüphane Uygulaması
+ï»¿# Konsol TabanlÄ± KÃ¼tÃ¼phane UygulamasÄ±
 
-Bu proje, Python ile geliştirilen ve JSON tabanlı veri saklama kullanan basit bir konsol kütüphane yönetim sistemi sunar.  
-Kitap ekleme, silme, listeleme ve arama işlemlerini Nesne Yönelimli Programlama (OOP) prensipleriyle gerçekleştirir.
+Bu proje, Python ile geliÅŸtirilen ve JSON tabanlÄ± veri saklama kullanan basit bir konsol kÃ¼tÃ¼phane yÃ¶netim sistemi sunar.  
+Kitap ekleme, silme, listeleme ve arama iÅŸlemlerini Nesne YÃ¶nelimli Programlama (OOP) prensipleriyle gerÃ§ekleÅŸtirir.
 
 ---
 
-## Özellikler
+## Ã–zellikler
 
 - Kitap ekleme, silme, listeleme ve ISBN ile arama  
-- Verilerin `library.json` dosyasında saklanması  
-- Modüler mimari: `book.py`, `library.py`, `main.py`  
+- Verilerin `library.json` dosyasÄ±nda saklanmasÄ±  
+- ModÃ¼ler mimari: `book.py`, `library.py`, `main.py`  
 
 ---
 
-## Dosya Yapısı
+## Dosya YapÄ±sÄ±
 
-- `book.py`         : Kitap nesnesini tanımlar  
-- `library.py`      : Kütüphane işlemlerini yönetir  
-- `main.py`         : Konsol uygulama döngüsünü içerir  
-- `library.json`    : Kitap verilerinin saklandığı dosya  
-- `README.md`       : Proje açıklamaları  
+- `book.py`         : Kitap nesnesini tanÄ±mlar  
+- `library.py`      : KÃ¼tÃ¼phane iÅŸlemlerini yÃ¶netir  
+- `main.py`         : Konsol uygulama dÃ¶ngÃ¼sÃ¼nÃ¼ iÃ§erir  
+- `library.json`    : Kitap verilerinin saklandÄ±ÄŸÄ± dosya  
+- `README.md`       : Proje aÃ§Ä±klamalarÄ±  
 
 ---
 
-## Kurulum ve Kullanım
+## Kurulum ve KullanÄ±m
 
-1. Depoyu klonlayın ya da indirin:  
+1. Depoyu klonlayÄ±n ya da indirin:  
    ```bash
    git clone https://github.com/sevgitobas/Python202Project
    cd Python202Project
+
+
+2. Gerekli kÃ¼tÃ¼phaneleri yÃ¼kleyin:
+	pip install -r requirements.txt
+
+
+3. UygulamayÄ± baÅŸlatÄ±n:
+	py main.py
+
+4. Konsol Ã¼zerinden kitap ekleyebilir, silebilir, listeleyebilir ve arama yapabilirsiniz.
+	- Kitap ekleme (ISBN, baÅŸlÄ±k, yazar, yÄ±l bilgisi girerek)
+	- Kitap silme (ISBN ile)
+	- TÃ¼m kitaplarÄ± listeleme
+	- Belirli bir kitabÄ± ISBN ile arama
+
