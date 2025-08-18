@@ -32,10 +32,12 @@ Kitap ekleme, silme, listeleme ve arama işlemlerini Nesne Yönelimli Programlam
 
 
 2. Gerekli kütüphaneleri yükleyin:
+   ```bash
 	pip install -r requirements.txt
 
 
 3. Uygulamayı başlatın:
+   ```bash
 	py main.py
 
 4. Konsol üzerinden kitap ekleyebilir, silebilir, listeleyebilir ve arama yapabilirsiniz.
