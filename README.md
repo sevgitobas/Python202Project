@@ -4,47 +4,50 @@ Bu proje, Python ile geliştirilen bir kitap yönetim sistemidir. İlk iki aşam
 
 ---
 
-## Kurulum
-- Reponun Klonlanması
+## Kurulum  :world_map:
+### 1. Reponun Klonlanması  
 
 			```bash
 			git clone https://github.com/sevgitobas/Python202Project.git
 			cd Python202Project
 
-- Bağımlılıkların Kurulumu
+### 2. Bağımlılıkların Kurulumu  
 			
 			```bash
 			pip install -r requirements.txt
 
 ---
 
-## Kullanım
-- Aşama 1 ve 2 : Terminal uygulaması
+## Kullanım  :rainbow:
+### Aşama 1 ve 2 : Terminal uygulaması
 		
-		'''bash
-		python PythonApplication1/main.py
+	'''bash
+	python PythonApplication1/main.py
 
-	Konsol üzerinden:
-	- Kitap ekleyebilir (ISBN, başlık, yazar, yıl)
-	- Kitap silebilir (ISBN ile)
-	- Tüm kitapları listeleyebilir
-	- Belirli bir kitabı ISBN ile arayabilirsiniz
+Konsol üzerinden:
+- Kitap ekleyebilir (ISBN, başlık, yazar, yıl)
+- Kitap silebilir (ISBN ile)
+- Tüm kitapları listeleyebilir
+- Belirli bir kitabı ISBN ile arayabilirsiniz
 
-- Aşama 3 : API Sunucusu
+### Aşama 3 : API Sunucusu
 
-		'''bash
-		uvicorn PythonApplication1.src.routers.api:app --reload
+	'''bash
+	uvicorn PythonApplication1.src.routers.api:app --reload
 	
-	API üzerinden:
-	- Kitap ekleme (POST /books)
-	- Kitap silme (DELETE /books/isbn)
-	- Tüm kitapları listeleme (GET /books)
-	- Belirli bir kitabı ISBN ile arama (GET /books/isbn)
+API üzerinden:
+- Kitap ekleme (POST /books)
+- Kitap silme (DELETE /books/isbn)
+- Tüm kitapları listeleme (GET /books)
+- Belirli bir kitabı ISBN ile arama (GET /books/isbn)
 
-	Sunucu çalıştıktan sonra tarayıcıdan şu adresten ulaşabilirsiniz: `http://http://127.0.0.1:8000/docs
+> Sunucu çalıştıktan sonra tarayıcıdan şu adresten ulaşabilirsiniz: 
+`http://127.0.0.1:8000
 
-- API Dokümantasyonu
-	- POST/books : Yeni kitap ekler.
+---
+
+## API Dokümantasyonu   :star:
+- POST/books : Yeni kitap ekler.
 		
 		'''json
 		{
@@ -55,10 +58,10 @@ Bu proje, Python ile geliştirilen bir kitap yönetim sistemidir. İlk iki aşam
 		}
 		'''
 	
-	- GET/books : Tüm kitapları listeler.
-	- GET/books/isbn: Belirtilen ISBN’ye sahip kitabı getirir.
-	- POST/books/isbn: Var olan kitabı günceller.
-		
+- GET/books : Tüm kitapları listeler.
+- GET/books/isbn: Belirtilen ISBN’ye sahip kitabı getirir.
+- POST/books/isbn: Var olan kitabı günceller.
+					
 		'''json
 		{
 			"title": "Yeni Kitap Başlığı",
@@ -67,40 +70,45 @@ Bu proje, Python ile geliştirilen bir kitap yönetim sistemidir. İlk iki aşam
 		}
 		'''
 	
-	- DELETE/books/isbn: Belirtilen ISBN’ye sahip kitabı siler.
+- DELETE/books/isbn: Belirtilen ISBN’ye sahip kitabı siler.
 
+---
 
-- Test Altyapısı
+## Test Altyapısı  :bellhop_bell:
 
-	Proje, `tests` klasörü altında yer alan test dosyaları ile birim testler içerir. Pytest ile testler yazılmıştır. `conftest.py` ile ortak fixture yönetimi sağlanmıştır. Testleri çalıştırmak için:
+Proje, `tests` klasörü altında yer alan test dosyaları ile birim testler içerir. Pytest ile testler yazılmıştır. `conftest.py` ile ortak fixture yönetimi sağlanmıştır. Testleri çalıştırmak için:
 			
-			```bash
-			python -m unittest discover -s tests -p "*.py"
+		```bash
+		python -m unittest discover -s tests -p "*.py"
 
 
 ---
 
-## Proje Yapısı
+## Proje Yapısı    :rocket:
 	
 	Python202Project/ 
-	├── README.md 
-	├── requirements.txt 
+	├── README.md                # Proje açıklamaları
+	├── requirements.txt         # Gerekli bağımlılıklar
 	├── PythonApplication1/ 
-	│ ├── main.py		     # Konsol uygulama döngüsü
+	│ ├── main.py		         # Konsol uygulama döngüsü
 	│ ├── src/
-	│ │ ├── models/
+	│ │ ├── models/  
+	│ │ │ ├── book.py            # Kitap sınıfı 
+	│ │ │ ├── user.py            # Kullanıcı sınıfı 
 	│ │ ├── routers/
-	│ │ │ ├── api.py             # API yönlendirme işlemleri
-	│ │ │ ├── book.py            # Kitap sınıfı
-	│ │ │ ├── library.py         # Kütüphane sınıfı
-	│ ├── tests/
+	│ │ │ ├── books.py           # Kitap yönlendirme işlemleri
+	│ │ │ ├── users.py           # Kullanıcı yönlendirme işlemleri
+	│ │ ├── api.py               # API yönlendirme işlemleri
+	│ │ ├── library.py           # Kütüphane sınıfı
+	│ │ ├── db.py                # JSON veri yönetimi
+	│ ├── tests/                 # Test dosyaları
 	| ├── data/
 	│ │ ├── library.json         # Kitap verilerinin saklandığı JSON dosyası
 
 
 ---
 
-## Özellikler
+## Özellikler  :sparkles:
 
 - Kitap ekleme, silme, listeleme ve ISBN ile arama  
 - Verilerin `library.json` dosyasında saklanması  
@@ -110,7 +118,7 @@ Bu proje, Python ile geliştirilen bir kitap yönetim sistemidir. İlk iki aşam
 
 ---
 
-## Dosya Yapısı
+## Dosya Yapısı    :label:
 
 - `book.py`         : Kitap nesnesini tanımlar  
 - `library.py`      : Kütüphane işlemlerini yönetir  
@@ -120,33 +128,8 @@ Bu proje, Python ile geliştirilen bir kitap yönetim sistemidir. İlk iki aşam
 
 ---
 
-## Kurulum ve Kullanım
 
-1. Depoyu klonlayın ya da indirin:  
-   ```bash
-   git clone https://github.com/sevgitobas/Python202Project
-   cd Python202Project
-
-
-2. Gerekli kütüphaneleri yükleyin:
-   ```bash
-	pip install -r requirements.txt
-
-
-3. Uygulamayı başlatın:
-   ```bash
-	python PythonApplication1/main.py
-
-
-4. Konsol üzerinden kitap ekleyebilir, silebilir, listeleyebilir ve arama yapabilirsiniz.
-	- Kitap ekleme (ISBN, başlık, yazar, yıl bilgisi girerek)
-	- Kitap silme (ISBN ile)
-	- Tüm kitapları listeleme
-	- Belirli bir kitabı ISBN ile arama
-
----
-
-## Notlar
+## Notlar     :books:
 
 	- library.json dosyası otomatik oluşturulmazsa, boş bir JSON dizisi ile manuel ekleyebilirsiniz: []
 	- Kodlar PythonApplication1 klasöründe yer almaktadır. Tüm modüller bu klasörde bulunur.
