@@ -23,6 +23,13 @@ def add_book(book: Book):
 def list_books():
     return books_db
 
+@router.get("/books/{isbn}", response_model=Book)
+def get_book_by_isbn(isbn: str):
+    for book in books_db:
+        if book.isbn == isbn:
+            return book
+    raise HTTPException(status_code=404, detail="Kitap bulunamadı")
+
 @router.delete("/books/{isbn}", status_code=200)
 def delete_book(isbn: str):
     for book in books_db:
@@ -30,6 +37,15 @@ def delete_book(isbn: str):
             books_db.remove(book)
             return {"message": f"{book.title} kitabı silindi"}
     raise HTTPException(status_code=404, detail=f"{isbn} ISBN'li kitap bulunamadı")
+
+@router.put("/books/{isbn}", response_model=Book)
+def update_book(isbn: str, updated_book: Book):
+    for index, book in enumerate(books_db):
+        if book.isbn == isbn:
+            books_db[index] = updated_book
+            return updated_book
+    raise HTTPException(status_code=404, detail="Kitap bulunamadı.")
+
 
 
 

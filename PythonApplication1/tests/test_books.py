@@ -1,17 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 
 import pytest
-from fastapi.testclient import TestClient
-from src.api import app
-from src.db import books_db
-
-@pytest.fixture
-def client():
-    return TestClient(app)
-
-@pytest.fixture(autouse=True)
-def clear_books_db():
-    books_db.clear()
 
 def test_add_book(client):
     payload = {
@@ -46,6 +35,18 @@ def test_list_books(client):
     assert response.status_code == 200
     assert isinstance(response.json(), list)
 
+def test_list_books_content(client):     #get ile içerik doğrulama testi
+    payload = {
+        "title": "Deneme Kitabı",
+        "author": "Yazar",
+        "year": 2022,
+        "isbn": "123-0000000000"
+    }
+    client.post("/books", json=payload)
+    response = client.get("/books")
+    kitaplar = response.json()
+    assert any(book["isbn"] == payload["isbn"] for book in kitaplar)
+
 def test_add_book_missing_isbn(client): #eksik isbn ile kitap ekleme testi
     payload = {
         "title": "Hayvan Çiftliği",
@@ -79,3 +80,20 @@ def test_add_book_duplicate_isbn(client):     #aynı isbn ile kitap ekleme testi
     # İkinci ekleme
     response2 = client.post("/books", json=payload)
     assert response2.status_code == 409
+
+def test_add_book_empty_payload(client):   # boş veri ile post deneme testi
+    response = client.post("/books", json={})
+    assert response.status_code == 422
+
+
+def test_get_book_by_isbn(client):   # ISBN ile kitap alma testi
+    payload = {
+        "title": "Tekil Kitap",
+        "author": "Yazar",
+        "year": 2023,
+        "isbn": "123-9999999999"
+    }
+    client.post("/books", json=payload)
+    response = client.get(f"/books/{payload['isbn']}")
+    assert response.status_code == 200
+    assert response.json()["title"] == payload["title"]

@@ -1,14 +1,9 @@
 ﻿# -*- coding: utf-8 -*-
 
 import pytest
-from fastapi.testclient import TestClient
 from src.api import app
 from src.db import books_db
 
-
-@pytest.fixture(scope="module")
-def client():
-    return TestClient(app)
 
 @pytest.fixture(autouse=True)
 def clear_books_db():

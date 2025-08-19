@@ -2,13 +2,7 @@
 
 import pytest
 import time
-from fastapi.testclient import TestClient
-from src.api import app
 
-
-@pytest.fixture(scope="module")
-def client():
-    return TestClient(app)
 
 @pytest.fixture
 def test_user_id():
