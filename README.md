@@ -1,7 +1,82 @@
 ﻿# Konsol Tabanlı Kütüphane Uygulaması
 
-Bu proje, Python ile geliştirilen ve JSON tabanlı veri saklama kullanan basit bir konsol kütüphane yönetim sistemi sunar.  
-Kitap ekleme, silme, listeleme ve arama işlemlerini Nesne Yönelimli Programlama (OOP) prensipleriyle gerçekleştirir.
+Bu proje, Python ile geliştirilen bir kitap yönetim sistemidir. İlk iki aşamada terminal üzerinden kitap ekleme, silme, arama ve listeleme işlemleri yapılırken; üçüncü aşamada FastAPI ile RESTful bir API sunucusu oluşturulmuştur. Veriler JSON dosyasında saklanır, modüler mimari ve test altyapısı ile sürdürülebilirlik hedeflenmiştir.
+
+---
+
+## Kurulum
+- Reponun Klonlanması
+
+			```bash
+			git clone https://github.com/sevgitobas/Python202Project.git
+			cd Python202Project
+
+- Bağımlılıkların Kurulumu
+			
+			```bash
+			pip install -r requirements.txt
+
+---
+
+## Kullanım
+- Aşama 1 ve 2 : Terminal uygulaması
+		
+		'''bash
+		python PythonApplication1/main.py
+
+	Konsol üzerinden:
+	- Kitap ekleyebilir (ISBN, başlık, yazar, yıl)
+	- Kitap silebilir (ISBN ile)
+	- Tüm kitapları listeleyebilir
+	- Belirli bir kitabı ISBN ile arayabilirsiniz
+
+- Aşama 3 : API Sunucusu
+
+		'''bash
+		uvicorn PythonApplication1.src.routers.api:app --reload
+	
+	API üzerinden:
+	- Kitap ekleme (POST /books)
+	- Kitap silme (DELETE /books/isbn)
+	- Tüm kitapları listeleme (GET /books)
+	- Belirli bir kitabı ISBN ile arama (GET /books/isbn)
+
+	Sunucu çalıştıktan sonra tarayıcıdan şu adresten ulaşabilirsiniz: `http://http://127.0.0.1:8000/docs
+
+- API Dokümantasyonu
+	- POST/books : Yeni kitap ekler.
+		
+		'''json
+		{
+			"isbn": "1234567890",
+			"title": "Kitap Başlığı",
+			"author": "Yazar Adı",
+			"year": 2023
+		}
+		'''
+	
+	- GET/books : Tüm kitapları listeler.
+	- GET/books/isbn: Belirtilen ISBN’ye sahip kitabı getirir.
+	- POST/books/isbn: Var olan kitabı günceller.
+		
+		'''json
+		{
+			"title": "Yeni Kitap Başlığı",
+			"author": "Yeni Yazar Adı",
+			"year": 2024
+		}
+		'''
+	
+	- DELETE/books/isbn: Belirtilen ISBN’ye sahip kitabı siler.
+
+
+- Test Altyapısı
+
+	Proje, `tests` klasörü altında yer alan test dosyaları ile birim testler içerir. Pytest ile testler yazılmıştır. `conftest.py` ile ortak fixture yönetimi sağlanmıştır. Testleri çalıştırmak için:
+			
+			```bash
+			python -m unittest discover -s tests -p "*.py"
+
 
 ---
 
