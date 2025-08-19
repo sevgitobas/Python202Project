@@ -1,30 +1,31 @@
 ﻿# -*- coding: utf-8 -*-
 
-import unittest
+import pytest
 import time
 from fastapi.testclient import TestClient
 from src.api import app
 
 
-class TestUserEndpoints(unittest.TestCase):
+@pytest.fixture(scope="module")
+def client():
+    return TestClient(app)
 
-    def setUp(self):
-        self.client = TestClient(app)
-        self.test_id = int(time.time())
+@pytest.fixture
+def test_user_id():
+    return int(time.time())
 
-    def test_get_users(self):
-        response = self.client.get("/users")
-        self.assertEqual(response.status_code, 200)
-        self.assertIsInstance(response.json(), list)
+def test_get_users(client):
+    response = client.get("/users")
+    assert response.status_code == 200
+    assert isinstance(response.json(), list)
 
-    def test_create_user(self):
-        payload = {"id": self.test_id, "name": "Sevgi"}
-        response = self.client.post("/users", json=payload)
-        self.assertIn("message", response.json())
-        self.assertIn("Kullanıcı oluşturuldu", response.json()["message"])
+def test_create_user(client, test_user_id):
+    payload = {"id": test_user_id, "name": "Sevgi"}
+    response = client.post("/users", json=payload)
+    assert response.status_code == 200
+    assert "message" in response.json()
+    assert "Kullanıcı oluşturuldu" in response.json()["message"]
 
-    def tearDown(self):
-        self.client.delete(f"/users/{self.test_id}")
-
-if __name__ == "__main__":
-    unittest.main()
+def test_cleanup_user(client, test_user_id):
+    response = client.delete(f"/users/{test_user_id}")
+    assert response.status_code in [200, 404] 

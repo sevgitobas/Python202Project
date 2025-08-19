@@ -1,67 +1,60 @@
 ﻿# -*- coding: utf-8 -*-
 
-import unittest
+import pytest
 import os
-from unittest.mock import patch, MagicMock
-from src.book import Book
 import tempfile
+from unittest.mock import patch, MagicMock
+from src.models.book import Book
 from src.library import Library
 
-class TestLibrary(unittest.TestCase):
+@pytest.fixture
+def temp_library():
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
+    library = Library(filename=temp_file.name)
+    library.books = []
+    library.save_books()
+    yield library
+    temp_file.close()
+    os.remove(temp_file.name)
 
-    def setUp(self):
-        # Geçici dosya oluştur
-        self.temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
-        self.library = Library(filename=self.temp_file.name)
-        self.library.books = []
-        self.library.save_books()
+def test_add_book(temp_library):
+    book = Book(title="Test Kitap", author="Test Yazar", year=2020, isbn="123-1234567890")
+    result = temp_library.add_book(book)
+    assert result is True
+    assert len(temp_library.books) == 1
 
-    def tearDown(self):
-        try:
-            self.temp_file.close()
-            os.remove(self.temp_file.name)
-        except Exception as e:
-            print(f"Dosya silinemedi: {e}")
+def test_add_duplicate_book(temp_library):
+    book1 = Book(title="Kitap 1", author="Yazar", year=2020, isbn="111-1111111111")
+    book2 = Book(title="Kitap 2", author="Yazar", year=2021, isbn="111-1111111111")
+    temp_library.add_book(book1)
+    result = temp_library.add_book(book2)
+    assert result is False
+    assert len(temp_library.books) == 1
 
-    def test_add_book(self):
-        book = Book("Test Kitap", "Test Yazar", "9999999999")
-        result = self.library.add_book(book)
-        self.assertTrue(result)
-        self.assertEqual(len(self.library.books), 1)
+def test_remove_book(temp_library):
+    book = Book(title="Silinecek Kitap", author="Yazar", year=2022, isbn="222-2222222222")
+    temp_library.add_book(book)
+    result = temp_library.remove_book("222-2222222222")
+    assert result is True
+    assert len(temp_library.books) == 0
 
-    def test_add_duplicate_book(self):
-        book1 = Book("Kitap 1", "Yazar", "111")
-        book2 = Book("Kitap 2", "Yazar", "111")  # Aynı ISBN
-        self.library.add_book(book1)
-        result = self.library.add_book(book2)
-        self.assertFalse(result)
-        self.assertEqual(len(self.library.books), 1)
+def test_find_book(temp_library):
+    book = Book(title="Aranacak Kitap", author="Yazar", year=2023, isbn="333-3333333333")
+    temp_library.add_book(book)
+    found = temp_library.find_book("333-3333333333")
+    assert found is not None
+    assert found.title == "Aranacak Kitap"
 
-    def test_remove_book(self):
-        book = Book("Silinecek Kitap", "Yazar", "222")
-        self.library.add_book(book)
-        result = self.library.remove_book("222")
-        self.assertTrue(result)
-        self.assertEqual(len(self.library.books), 0)
+def test_list_books(temp_library):
+    book1 = Book(title="Kitap A", author="Yazar A", year=2020, isbn="444-4444444444")
+    book2 = Book(title="Kitap B", author="Yazar B", year=2021, isbn="555-5555555555")
+    temp_library.add_book(book1)
+    temp_library.add_book(book2)
+    books = temp_library.list_books()
+    assert len(books) == 2
 
-    def test_find_book(self):
-        book = Book("Aranacak Kitap", "Yazar", "333")
-        self.library.add_book(book)
-        found = self.library.find_book("333")
-        self.assertIsNotNone(found)
-        self.assertEqual(found.title, "Aranacak Kitap")
-
-    def test_list_books(self):
-        book1 = Book("Kitap A", "Yazar A", "444")
-        book2 = Book("Kitap B", "Yazar B", "555")
-        self.library.add_book(book1)
-        self.library.add_book(book2)
-        books = self.library.list_books()
-        self.assertEqual(len(books), 2)
-
-    @patch("src.library.httpx.get")
-    def test_add_book_by_isbn(self, mock_get):
-        # İlk çağrı: kitap bilgisi
+def test_add_book_by_isbn(temp_library):
+    with patch("src.library.httpx.get") as mock_get:
         book_response = MagicMock()
         book_response.status_code = 200
         book_response.json.return_value = {
@@ -69,39 +62,31 @@ class TestLibrary(unittest.TestCase):
             "authors": [{"key": "/authors/OL34184A"}]
         }
 
-        # İkinci çağrı: yazar bilgisi
         author_response = MagicMock()
         author_response.status_code = 200
         author_response.json.return_value = {
             "name": "Roald Dahl"
         }
 
-        # Sıralı yanıtlar: önce kitap, sonra yazar
         mock_get.side_effect = [book_response, author_response]
 
-        isbn = "9780140328721"
-        result = self.library.add_book_by_isbn(isbn)
-        self.assertTrue(result)
+        isbn = "978-0140328721"
+        result = temp_library.add_book_by_isbn(isbn)
+        assert result is True
 
-        book = self.library.find_book(isbn)
-        self.assertIsNotNone(book)
-        self.assertEqual(book.title, "Matilda")
-        self.assertEqual(book.author, "Roald Dahl")
+        book = temp_library.find_book(isbn)
+        assert book is not None
+        assert book.title == "Matilda"
+        assert book.author == "Roald Dahl"
 
-    def test_remove_book_by_isbn(self):
-        book = Book("Test Kitap", "Test Yazar", "1234567890")
-        self.library.add_book(book)
+def test_remove_book_by_isbn(temp_library):
+    book = Book(title="Test Kitap", author="Test Yazar", year=2020, isbn="123-1234567890")
+    temp_library.add_book(book)
 
-        # Silme işlemi
-        result = self.library.remove_book("1234567890")
-        self.assertTrue(result)
+    result = temp_library.remove_book("123-1234567890")
+    assert result is True
 
-        # Tekrar silmeye çalış → False dönmeli
-        result = self.library.remove_book("1234567890")
-        self.assertFalse(result)
+    result = temp_library.remove_book("123-1234567890")
+    assert result is False
 
-        # Kitap gerçekten silinmiş mi?
-        self.assertEqual(len(self.library.books), 0)
-
-if __name__ == "__main__":
-    unittest.main()
+    assert len(temp_library.books) == 0

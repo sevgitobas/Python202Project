@@ -1,9 +1,9 @@
-
+﻿
 # library.py
 
 import json
 import os
-from src.book import Book
+from src.models.book import Book
 from typing import Optional
 from pathlib import Path
 import httpx
@@ -18,15 +18,16 @@ class Library:
         if not self.filename.exists():
             with open(self.filename, "w", encoding="utf-8") as f:
                 json.dump([], f, ensure_ascii=False, indent=4)
-        with open(self.filename, "w", encoding="utf-8") as f:
+
+        with open(self.filename, "r", encoding="utf-8") as f:
             data = json.load(f)
-            self.books = [Book.from_dict(item) for item in data]
+            self.books = [Book(**item) for item in data]
 
     def save_books(self):
-        """Mevcut kitap listesini JSON dosyasına yazar."""
+        data = [book.model_dump() for book in self.books]  
         with open(self.filename, "w", encoding="utf-8") as f:
-            data = [book.to_dict() for book in self.books]
             json.dump(data, f, ensure_ascii=False, indent=4)
+
 
     def add_book(self, book: Book) -> bool:
         """Yeni kitabı ekler. Aynı ISBN varsa eklemez."""
